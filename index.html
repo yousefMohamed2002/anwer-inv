@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wedding Invitation</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Noto+Serif:wght@400;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+:root{--wine:#4a0f14;--wine2:#6b1a22;--cream:#f4ead8;--paper:#ece3d3;--gold:#c9a24a;--ink:#5a1820}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--cream);color:var(--ink);font-family:'Noto Serif',serif;overflow-x:hidden}
+body.locked{overflow:hidden;height:100vh}
+main{max-width:480px;margin:auto;padding:24px 16px 90px;text-align:center;background:
+ radial-gradient(circle at 50% 0,#f8f1e2,var(--cream))}
+h1,h2{font-family:'Cormorant Garamond',serif;font-weight:400}
+.label{font-size:12px;letter-spacing:.25em;font-weight:600;margin:28px 0 16px}
+.names{font-family:'Cormorant Garamond',serif;font-size:44px;line-height:1.05}
+.names i{display:block;font-size:30px;opacity:.5;font-family:'Pinyon Script',cursive}
+
+/* ===== الشاشة الأولى (الكارت + زرار Open) ===== */
+#intro{position:fixed;inset:0;z-index:50;background:linear-gradient(#6b1520,#3a0a10);display:grid;place-items:center;transition:opacity .8s,visibility .8s}
+#intro.gone{opacity:0;visibility:hidden}
+.card0{width:min(300px,80vw);background:var(--wine);color:#fff;border-radius:6px;padding:46px 20px 30px;text-align:center;position:relative;box-shadow:0 20px 50px #0006;transition:transform .8s,opacity .8s}
+#intro.gone .card0{transform:translateY(-60px) scale(.96);opacity:0}
+.card0 .heart{position:absolute;top:-22px;left:50%;transform:translateX(-50%);width:46px;height:46px;border-radius:50%;background:#fff;color:var(--wine);display:grid;place-items:center}
+.card0 .names{font-size:26px;margin:6px 0 10px}
+.card0 .names i{font-size:20px}
+.card0 p{font-size:14px;margin:14px 0;color:#fff}
+.card0 .names,.card0 .names i{color:#fff}
+.card0 .btn{background:var(--wine2);border:1px solid #fff8}
+.btn{background:var(--wine);color:#fff;border:0;border-radius:30px;padding:10px 28px;font:600 14px 'Noto Serif',serif;cursor:pointer;box-shadow:0 6px 14px #0004}
+.fl{position:absolute;width:70px;height:70px}
+.fl.tl{top:-6px;left:-6px}.fl.br{bottom:-6px;right:-6px;transform:rotate(180deg)}
+.fall{position:fixed;top:-20px;color:#e0556b;font-size:14px;opacity:.7;animation:fall linear forwards;pointer-events:none}
+@keyframes fall{to{transform:translateY(110vh) rotate(180deg)}}
+
+/* ===== الظرف ===== */
+.env{position:relative;width:250px;height:230px;margin:10px auto 6px}
+.letter{position:absolute;left:50%;top:0;width:150px;height:170px;background:#d9d4c8;border:6px solid #fff;transform:translateX(-30%) rotate(7deg);box-shadow:0 6px 14px #0003;display:grid;place-items:center}
+.letter{overflow:hidden}
+.letter img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.letter span{font:700 90px 'Pinyon Script',cursive;color:#7a2a35;text-shadow:2px 3px 0 #fff8,3px 5px 4px #0004}
+.pocket{position:absolute;left:0;right:0;bottom:0;height:130px;background:linear-gradient(135deg,var(--wine2),var(--wine));clip-path:polygon(0 0,50% 48%,100% 0,100% 100%,0 100%);box-shadow:0 8px 20px #0004}
+.seal{position:absolute;left:50%;bottom:70px;transform:translateX(-50%);width:42px;height:42px;border-radius:50%;background:radial-gradient(#e2bd68,#a77c2a);display:grid;place-items:center;color:#7a5410;box-shadow:0 3px 6px #0006}
+.env .fl{width:110px;height:110px;left:-30px;top:25px}
+
+/* ===== كروت بوردو ===== */
+.wine{background:var(--wine);color:#f3e6dc;border-radius:10px;padding:30px 20px;margin:20px 0;position:relative;box-shadow:0 10px 24px #0004;overflow:hidden}
+.wine .names{color:#f6ece4}
+.wine .label{margin-top:0;color:#fff}
+.wine .fl{width:120px;height:160px;right:-14px;top:30%}
+.wine .fl.left{left:-14px;right:auto;transform:scaleX(-1)}
+.when{display:flex;justify-content:center;align-items:center;gap:14px;margin:14px 0}
+.when b{font:400 44px 'Cormorant Garamond',serif}
+.when small{display:block;font-size:11px;text-align:left}
+.when div+div{border-left:1px solid #fff6;padding-left:14px}
+.cd{font-size:13px;opacity:.9}.cd span{display:block;opacity:.6;margin:14px 0 4px;font-size:14px}
+
+/* ===== المعرض (Coverflow) ===== */
+.gal{position:relative;height:340px;perspective:900px;touch-action:pan-y;user-select:none}
+.gal figure{position:absolute;left:50%;top:10px;width:190px;height:280px;margin-left:-95px;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 14px 30px #0005;transition:transform .5s,opacity .5s,filter .5s}
+.gal img{width:100%;height:100%;object-fit:cover;display:block}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.dots i{width:7px;height:7px;border-radius:5px;background:#a9757b66;transition:.3s}.dots i.on{width:22px;background:var(--wine2)}
+
+/* ===== التقويم ===== */
+.cal{background:var(--paper);color:var(--ink);border-radius:8px;padding:14px;margin-top:20px;font-size:11px}
+.cal h3{font:italic 400 24px 'Pinyon Script',cursive;margin-bottom:8px}
+.cal table{width:100%;border-collapse:collapse}
+.cal th{font-weight:400;opacity:.6;padding:5px 0;border-bottom:2px solid var(--ink)}
+.cal td{padding:6px 0;height:30px}
+.cal td.me{background:var(--wine);color:#fff;border-radius:50%;font-weight:700;display:table-cell}
+.link{display:inline-block;margin:14px 0 0;color:#fff;font-size:12px;text-decoration:underline;background:none;border:0;cursor:pointer;font-family:inherit}
+
+.venue a.btn{color:#fff}
+.fab{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:60;width:42px;height:42px;border-radius:50%;border:0;background:var(--wine2);color:#fff;font-size:16px;cursor:pointer;box-shadow:0 4px 10px #0005}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body class="locked">
+
+<!-- =====================================================================
+     ★★★ منطقة التعديل — كل اللي محتاج تغيره هنا بس ★★★
+     ===================================================================== -->
+<script>
+const CONFIG = {
+
+  // ---------- الأسماء ----------
+  groom: "AnWaR",              // اسم العريس
+  bride: "HeBa",               // اسم العروسة
+  monogramImage: "4.jpg",           // صورة بدل الحرف اللي في الظرف (مثلا "logo.png") — لو فاضي بيظهر الحرف اللي تحت
+  monogram: "أهـ",              // الحرف اللي على الكارت جوه الظرف (حرف واحد أو حرفين)
+
+  // ---------- الموعد ----------
+  // الصيغة: سنة-شهر-يوم T ساعة:دقيقة  (بتوقيت المكان)
+  dateTime: "2026-11-28T18:00:00",
+  dateText: "November 28, 2026",   // التاريخ اللي بيظهر في الشاشة الأولى
+  receptionLine: "THE RECEPTION WILL TAKE PLACE AT:",
+
+  // ---------- النصوص ----------
+  invitesText: "Cordially Invites",
+  openButton: "Open",
+  saveTheDate: "SAVE THE DATE",
+  ceremonyTitle: "CEREMONY INFO",
+  galleryTitle: "PHOTO GALLERY",
+  weddingTitle: "WEDDING INFO",
+  venueTitle: "WEDDING VENUE",
+  venueName: "The View",          // اسم المكان
+  venueAddress: " نادي الجلاء قاعة the view ",  // العنوان
+  mapLink: "https://share.google/1Q2soEUKPNM8zHKcL",  // لينك الخريطة (انسخه من Google Maps)
+
+  // ---------- الصور (حط لينك الصورة أو اسم ملف جنب الملف ده، مثلا "photos/1.jpg") ----------
+  // سيبها "" والصورة الافتراضية هتظهر. تقدر تزود أو تشيل صور من القايمة.
+  photos: [
+    "1.jpg",   // الصورة 1
+    "2.jpg",   // الصورة 2
+    "3.jpg",   // الصورة 3
+  ],
+
+  // ---------- صورة الورد (اختياري) ----------
+  // PNG شفاف لباقة ورد. لو فاضي بيستخدم الورد المرسوم.
+  flowerImage: "",
+
+  // ---------- الموسيقى (اختياري) ----------
+  music: "Video Project 22.mp3",    // مثلا "song.mp3"
+
+  // ---------- الألوان (اختياري) ----------
+  colors: { wine: "#4a0f14", wine2: "#6b1a22", cream: "#f4ead8" }
+};
+</script>
+<!-- ================= نهاية منطقة التعديل ================= -->
+
+<!-- الشاشة الأولى -->
+<div id="intro">
+  <div class="card0">
+    <div class="heart">♥</div>
+    <span class="fl tl" data-flower></span><span class="fl br" data-flower></span>
+    <div class="names" id="i-names"></div>
+    <p id="i-date"></p><p id="i-inv"></p>
+    <button class="btn" id="openBtn"></button>
+  </div>
+</div>
+
+<main>
+  <!-- حفظ الموعد + الظرف -->
+  <div class="label" id="t-save"></div>
+  <div class="env">
+    <span class="fl" data-flower></span>
+    <div class="letter"><span id="mono"></span></div>
+    <div class="pocket"></div><div class="seal">♥</div>
+  </div>
+  <div class="names" id="h-names"></div>
+
+  <!-- معلومات الحفل -->
+  <section class="wine" style="margin-top:34px">
+    <div class="label" id="t-cer"></div>
+    <div class="names" id="c-names" style="font-size:40px"></div>
+    <span class="fl" data-flower></span>
+  </section>
+
+  <!-- المعرض -->
+  <div class="label" id="t-gal"></div>
+  <div class="gal" id="gal"></div>
+  <div class="dots" id="dots"></div>
+
+  <!-- معلومات الفرح -->
+  <section class="wine">
+    <span class="fl left" data-flower></span>
+    <div class="label" id="t-wed"></div>
+    <p id="reception" style="font-size:20px;line-height:1.3;margin-bottom:6px"></p>
+    <small id="timeDay" style="opacity:.7"></small>
+    <div class="when"><div><b id="dd"></b></div><div><small id="mm"></small><small id="yy"></small></div></div>
+    <div class="cd"><span>Countdown</span><div id="cd"></div></div>
+    <div class="cal"><h3 id="calTitle"></h3><table id="cal"></table></div>
+    <button class="link" id="addCal">Add to Calendar</button>
+  </section>
+
+  <!-- المكان -->
+  <section class="venue">
+    <div class="label" id="t-ven"></div>
+    <p style="font-size:18px" id="vName"></p>
+    <p style="font-size:13px;opacity:.75;margin:6px 0 14px" id="vAddr"></p>
+    <a class="btn" id="vLink" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Open map</a>
+  </section>
+</main>
+
+<button class="fab" id="musicBtn" aria-label="Music" style="display:none">♪</button>
+
+<script>
+/* ===== الكود ده مش محتاج تلمسه ===== */
+const $ = id => document.getElementById(id);
+const C = CONFIG, D = new Date(C.dateTime);
+const R = document.documentElement.style;
+R.setProperty('--wine',C.colors.wine);R.setProperty('--wine2',C.colors.wine2);R.setProperty('--cream',C.colors.cream);
+
+// نصوص
+const nm = `${C.groom}<i>&amp;</i>${C.bride}`;
+['i-names','h-names','c-names'].forEach(i=>$(i).innerHTML=nm);
+$('i-date').textContent=C.dateText; $('i-inv').textContent=C.invitesText; $('openBtn').textContent=C.openButton;
+$('t-save').textContent=C.saveTheDate; $('t-cer').textContent=C.ceremonyTitle; $('t-gal').textContent=C.galleryTitle;
+$('t-wed').textContent=C.weddingTitle; $('t-ven').textContent=C.venueTitle; $('reception').textContent=C.receptionLine;
+if(C.monogramImage){$('mono').outerHTML=`<img src="${C.monogramImage}" alt="">`}else{$('mono').textContent=C.monogram} $('vName').textContent=C.venueName; $('vAddr').textContent=C.venueAddress; $('vLink').href=C.mapLink;
+const M=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+$('timeDay').textContent=D.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})+'  •  '+days[D.getDay()].toUpperCase();
+$('dd').textContent=D.getDate(); $('mm').textContent=M[D.getMonth()].toUpperCase(); $('yy').textContent=D.getFullYear();
+
+// الورد (صورة أو مرسوم)
+const rose=`<svg viewBox="0 0 100 130" width="100%" height="100%"><g fill="none" stroke="#c9a24a" stroke-width="1.2"><path d="M50 128C48 90 56 60 70 20M62 70c12-8 20-8 28-16M52 90c-10-10-18-12-28-12"/></g><g><circle cx="52" cy="40" r="22" fill="#7a1522"/><circle cx="52" cy="40" r="15" fill="#932031"/><circle cx="52" cy="40" r="8" fill="#6a111c"/><circle cx="34" cy="82" r="18" fill="#8a1a2a"/><circle cx="34" cy="82" r="11" fill="#a42838"/><circle cx="74" cy="76" r="13" fill="#efe1c6"/><circle cx="74" cy="76" r="7" fill="#d9c49c"/><circle cx="80" cy="14" r="5" fill="#fff"/></g></svg>`;
+document.querySelectorAll('[data-flower]').forEach(e=>e.innerHTML=C.flowerImage?`<img src="${C.flowerImage}" style="width:100%;height:100%;object-fit:contain">`:rose);
+
+// صور افتراضية (لو سبت الخانة فاضية)
+const ph=i=>'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="380" height="560"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8cfc2"/><stop offset="1" stop-color="#8d7f75"/></linearGradient></defs><rect width="380" height="560" fill="url(#g)"/><text x="190" y="290" font-size="60" text-anchor="middle" fill="#fff" font-family="serif">${i+1}</text></svg>`);
+
+// المعرض
+const photos=C.photos.map((p,i)=>p||ph(i)); let cur=0;
+$('gal').innerHTML=photos.map(p=>`<figure><img src="${p}" alt="" draggable="false"></figure>`).join('');
+$('dots').innerHTML=photos.map(()=>'<i></i>').join('');
+const figs=[...$('gal').children], dots=[...$('dots').children];
+function show(){figs.forEach((f,i)=>{const d=i-cur,a=Math.abs(d);
+  f.style.transform=`translateX(${d*58}%) translateZ(${-a*120}px) rotateY(${-d*32}deg)`;
+  f.style.zIndex=10-a;f.style.opacity=a>2?0:1-a*.15;f.style.filter=a?'grayscale(.5) brightness(.9)':'none'});
+  dots.forEach((d,i)=>d.classList.toggle('on',i===cur))}
+show();
+let x0=null;
+$('gal').addEventListener('pointerdown',e=>x0=e.clientX);
+addEventListener('pointerup',e=>{if(x0===null)return;const d=e.clientX-x0;x0=null;
+  if(Math.abs(d)>30){cur=Math.max(0,Math.min(photos.length-1,cur+(d<0?1:-1)));show()}});
+figs.forEach((f,i)=>f.onclick=()=>{cur=i;show()});
+setInterval(()=>{cur=(cur+1)%photos.length;show()},4500);
+
+// العدّاد
+function tick(){let s=Math.max(0,Math.floor((D-Date.now())/1000));
+  const d=Math.floor(s/86400);s%=86400;const h=Math.floor(s/3600);s%=3600;
+  $('cd').textContent=`${d} days ${h} hours ${Math.floor(s/60)} min ${s%60} sec`}
+tick();setInterval(tick,1000);
+
+// التقويم
+(function(){const y=D.getFullYear(),m=D.getMonth();$('calTitle').textContent=`${M[m]} ${y}`;
+  const first=(new Date(y,m,1).getDay()+6)%7,n=new Date(y,m+1,0).getDate();
+  let h='<tr>'+['Mo','Tu','We','Th','Fr','Sa','Su'].map(d=>`<th>${d}</th>`).join('')+'</tr><tr>';
+  for(let i=0;i<first;i++)h+='<td></td>';
+  for(let d=1;d<=n;d++){if((first+d-1)%7===0&&d>1)h+='</tr><tr>';
+    h+=`<td${d===D.getDate()?' class="me"':''}>${d}</td>`}
+  $('cal').innerHTML=h+'</tr>'})();
+
+// Add to Calendar (ملف ics)
+$('addCal').onclick=()=>{const f=t=>t.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z',e=new Date(+D+4*36e5);
+  const ics=`BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${C.groom} & ${C.bride} Wedding\nDTSTART:${f(D)}\nDTEND:${f(e)}\nLOCATION:${C.venueName}\nEND:VEVENT\nEND:VCALENDAR`;
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));a.download='wedding.ics';a.click()};
+
+// قلوب بتنزل + فتح الدعوة
+function heart(){const h=document.createElement('div');h.className='fall';h.textContent='♥';
+  h.style.left=Math.random()*100+'vw';h.style.animationDuration=4+Math.random()*4+'s';
+  document.body.appendChild(h);setTimeout(()=>h.remove(),8000)}
+const hi=setInterval(heart,500);
+$('openBtn').onclick=()=>{$('intro').classList.add('gone');document.body.classList.remove('locked');clearInterval(hi);
+  if(C.music){au.play().catch(()=>{});$('musicBtn').textContent='♪'}};
+
+// الموسيقى
+const au=new Audio(C.music?encodeURI(C.music):'');au.loop=true;
+if(C.music){$('musicBtn').style.display='block';
+  $('musicBtn').onclick=()=>{au.paused?au.play():au.pause()}}
+
+// تشغيل الأغنية أول ما الصفحة تحمل
+// لو المتصفح منع التشغيل التلقائي، بتشتغل مع أول لمسة أو ضغطة أو سكرول
+if(C.music){
+  const evs=['pointerdown','touchstart','keydown','scroll','click'];
+  const go=()=>au.play().then(()=>evs.forEach(e=>removeEventListener(e,go))).catch(()=>{});
+  au.play().catch(()=>evs.forEach(e=>addEventListener(e,go,{passive:true})));
+}
+</script>
+</body>
+</html>
