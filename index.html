@@ -8,7 +8,7 @@
 <style>
 :root{--wine:#4a0f14;--wine2:#6b1a22;--cream:#f4ead8;--paper:#ece3d3;--gold:#c9a24a;--ink:#5a1820}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--cream);color:var(--ink);font-family:'Noto Serif',serif;overflow-x:hidden}
+html,body{background:var(--cream);color:var(--ink);font-family:'Noto Serif',serif;overflow-x:hidden;overflow-x:clip}
 body.locked{overflow:hidden;height:100vh}
 main{max-width:480px;margin:auto;padding:24px 16px 90px;text-align:center;background:
  radial-gradient(circle at 50% 0,#f8f1e2,var(--cream))}
@@ -35,14 +35,23 @@ h1,h2{font-family:'Cormorant Garamond',serif;font-weight:400}
 @keyframes fall{to{transform:translateY(110vh) rotate(180deg)}}
 
 /* ===== الظرف ===== */
-.env{position:relative;width:250px;height:230px;margin:10px auto 6px}
-.letter{position:absolute;left:50%;top:0;width:150px;height:170px;background:#d9d4c8;border:6px solid #fff;transform:translateX(-30%) rotate(7deg);box-shadow:0 6px 14px #0003;display:grid;place-items:center}
-.letter{overflow:hidden}
-.letter img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.letter span{font:700 90px 'Pinyon Script',cursive;color:#7a2a35;text-shadow:2px 3px 0 #fff8,3px 5px 4px #0004}
-.pocket{position:absolute;left:0;right:0;bottom:0;height:130px;background:linear-gradient(135deg,var(--wine2),var(--wine));clip-path:polygon(0 0,50% 48%,100% 0,100% 100%,0 100%);box-shadow:0 8px 20px #0004}
-.seal{position:absolute;left:50%;bottom:70px;transform:translateX(-50%);width:42px;height:42px;border-radius:50%;background:radial-gradient(#e2bd68,#a77c2a);display:grid;place-items:center;color:#7a5410;box-shadow:0 3px 6px #0006}
-.env .fl{width:110px;height:110px;left:-30px;top:25px}
+.env{position:relative;width:min(320px,88vw);aspect-ratio:300/290;margin:68px auto 4px}
+.env>svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.cl{position:absolute;inset:0;clip-path:inset(-34% -10% 3.4% -10%)}
+.card{position:absolute;left:21%;top:8.3%;width:58%;aspect-ratio:1/1.3;padding:8px;display:flex;flex-direction:column;background:linear-gradient(#fcf6ea,#f0e4cc);border-radius:3px;box-shadow:0 10px 24px #0005;transform:translateY(84%) rotate(0deg);transform-origin:50% 88%;will-change:transform;transition:transform 2.4s cubic-bezier(.22,.8,.2,1) .6s}
+body.opened .card{transform:translateY(-30%) rotate(-6deg);animation:sway 7s ease-in-out 3.2s infinite alternate}
+@keyframes sway{from{transform:translateY(-30%) rotate(-6deg)}to{transform:translateY(-31%) rotate(-3.5deg)}}
+.arch img,.gal img{opacity:0;transition:opacity 1.2s ease}.arch img.ld,.gal img.ld{opacity:1}
+html{scroll-behavior:auto}
+.arch{flex:1;min-height:0;display:flex;padding:3px;border:1px solid var(--gold);border-radius:999px 999px 3px 3px}
+.arch>div{flex:1;overflow:hidden;background:#eadfd0;border-radius:999px 999px 1px 1px}
+.arch img{width:100%;height:100%;object-fit:contain;display:block}
+.arch span{display:grid;place-items:center;height:100%;font:400 64px 'Pinyon Script',cursive;color:#7a2a35}
+.orn{display:flex;align-items:center;justify-content:center;gap:6px;height:16px;color:var(--gold);font-size:9px}
+.orn i{width:36px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}.orn i+i{transform:scaleX(-1)}
+.env .fl{position:absolute;z-index:4;height:auto;aspect-ratio:100/130;pointer-events:none}
+.env .fl.a{width:37%;left:-7%;top:20%}
+.env .fl.b{width:25%;right:-5%;bottom:0;transform:scaleX(-1) rotate(-6deg)}
 
 /* ===== كروت بوردو ===== */
 .wine{background:var(--wine);color:#f3e6dc;border-radius:10px;padding:30px 20px;margin:20px 0;position:relative;box-shadow:0 10px 24px #0004;overflow:hidden}
@@ -58,7 +67,7 @@ h1,h2{font-family:'Cormorant Garamond',serif;font-weight:400}
 
 /* ===== المعرض (Coverflow) ===== */
 .gal{position:relative;height:340px;perspective:900px;touch-action:pan-y;user-select:none}
-.gal figure{position:absolute;left:50%;top:10px;width:190px;height:280px;margin-left:-95px;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 14px 30px #0005;transition:transform .5s,opacity .5s,filter .5s}
+.gal figure{position:absolute;left:50%;top:10px;width:190px;height:280px;margin-left:-95px;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 14px 30px #0005;will-change:transform,opacity;backface-visibility:hidden;transition:transform 1s cubic-bezier(.25,.8,.25,1),opacity .9s ease,filter .9s ease}
 .gal img{width:100%;height:100%;object-fit:cover;display:block}
 .dots{display:flex;gap:6px;justify-content:center;margin-top:6px}
 .dots i{width:7px;height:7px;border-radius:5px;background:#a9757b66;transition:.3s}.dots i.on{width:22px;background:var(--wine2)}
@@ -69,12 +78,27 @@ h1,h2{font-family:'Cormorant Garamond',serif;font-weight:400}
 .cal table{width:100%;border-collapse:collapse}
 .cal th{font-weight:400;opacity:.6;padding:5px 0;border-bottom:2px solid var(--ink)}
 .cal td{padding:6px 0;height:30px}
-.cal td.me{background:var(--wine);color:#fff;border-radius:50%;font-weight:700;display:table-cell}
+.cal td.me{position:relative;padding:0}
+.cal td.me::before{content:"";position:absolute;left:50%;top:50%;width:30px;height:28px;margin:-15px 0 0 -15px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 30'%3E%3Cpath d='M16 29C5 21 1 15 1 9.5 1 5 4.5 2 8.5 2c3 0 5.5 1.7 7.5 4.6C18 3.7 20.5 2 23.5 2 27.5 2 31 5 31 9.5 31 15 27 21 16 29Z' fill='%23d2273d'/%3E%3C/svg%3E") center/contain no-repeat;transform-origin:50% 60%;animation:beat 1.8s infinite}
+.cal td.me span{position:relative;color:#fff;font-weight:700;font-size:11px}
 .link{display:inline-block;margin:14px 0 0;color:#fff;font-size:12px;text-decoration:underline;background:none;border:0;cursor:pointer;font-family:inherit}
 
 .venue a.btn{color:#fff}
 .fab{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:60;width:42px;height:42px;border-radius:50%;border:0;background:var(--wine2);color:#fff;font-size:16px;cursor:pointer;box-shadow:0 4px 10px #0005}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+
+/* ===== الخريطة ===== */
+.venue{margin-top:34px}
+.map{display:block;position:relative;aspect-ratio:4/3;margin:4px 6px 20px;border-radius:14px;overflow:hidden;box-shadow:0 0 0 3px var(--cream),0 0 0 4px #c9a24a99,0 14px 28px #0003}
+.map svg,.map img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pw{position:absolute;width:0;height:0}
+.pw svg{inset:auto;left:-22px;top:-42px;width:44px;height:41px;transform-origin:50% 100%;animation:beat 1.8s infinite;filter:drop-shadow(0 3px 3px #0005)}
+.pw::before{content:"";position:absolute;left:-24px;top:-8px;width:48px;height:16px;border:2px solid #d2273d;border-radius:50%;animation:ring 2.4s ease-out infinite}
+.pw b{position:absolute;top:12px;left:0;transform:translateX(-50%);background:var(--wine);color:#fff;font:600 11px 'Noto Serif',serif;padding:4px 11px;border-radius:20px;white-space:nowrap;box-shadow:0 3px 8px #0004}
+@keyframes beat{0%,40%,100%{transform:scale(1)}10%,30%{transform:scale(1.14)}20%{transform:scale(1)}}
+@keyframes ring{0%{transform:scale(.3);opacity:.9}100%{transform:scale(1.5);opacity:0}}
+.fab{display:grid;place-items:center}.fab svg{width:18px;height:18px}
+#scrollBtn{bottom:calc(66px + env(safe-area-inset-bottom,0px))}
 </style>
 </head>
 <body class="locked">
@@ -88,7 +112,7 @@ const CONFIG = {
   // ---------- الأسماء ----------
   groom: "AnWaR",              // اسم العريس
   bride: "HeBa",               // اسم العروسة
-  monogramImage: "",           // صورة بدل الحرف اللي في الظرف (مثلا "logo.png") — لو فاضي بيظهر الحرف اللي تحت
+  monogramImage: "4.png",           // صورة بدل الحرف اللي في الظرف (مثلا "logo.png") — لو فاضي بيظهر الحرف اللي تحت
   monogram: "أهـ",              // الحرف اللي على الكارت جوه الظرف (حرف واحد أو حرفين)
 
   // ---------- الموعد ----------
@@ -121,6 +145,14 @@ const CONFIG = {
   // PNG شفاف لباقة ورد. لو فاضي بيستخدم الورد المرسوم.
   flowerImage: "",
 
+  // ---------- الخريطة ----------
+  // خد سكرين شوت من Google Maps وحطها هنا (مثلا "map.png"). لو فاضي بتظهر خريطة مرسومة.
+  mapImage: "",
+  mapPin: { x: 55, y: 45 },   // مكان القلب على الخريطة (نسبة مئوية من العرض والطول)
+
+  // ---------- السكرول الأوتوماتيك ----------
+  autoScroll: { enabled: true, speed: 38, delay: 2500, resume: 3500 },   // speed = بكسل في الثانية | delay = البداية بعد فتح الدعوة | resume = يكمل لوحده بعد ما تسيب الشاشة (ملي ثانية)
+
   // ---------- الموسيقى (اختياري) ----------
   music: "Video Project 22.mp3",    // مثلا "song.mp3"
 
@@ -145,9 +177,43 @@ const CONFIG = {
   <!-- حفظ الموعد + الظرف -->
   <div class="label" id="t-save"></div>
   <div class="env">
-    <span class="fl" data-flower></span>
-    <div class="letter"><span id="mono"></span></div>
-    <div class="pocket"></div><div class="seal">♥</div>
+    <svg viewBox="0 0 300 290" aria-hidden="true">
+      <defs>
+        <linearGradient id="gl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7edd8"/><stop offset="1" stop-color="#e2d0aa"/></linearGradient>
+        <linearGradient id="gL" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--wine2)"/><stop offset="1" style="stop-color:var(--wine)"/></linearGradient>
+        <linearGradient id="gR" x1="1" y1="0" x2="0" y2="0"><stop offset="0" style="stop-color:var(--wine2)"/><stop offset="1" style="stop-color:var(--wine)"/></linearGradient>
+        <linearGradient id="gB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--wine2)"/><stop offset="1" style="stop-color:var(--wine)"/></linearGradient>
+        <radialGradient id="gg" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#f3dc92"/><stop offset=".55" stop-color="#c9a24a"/><stop offset="1" stop-color="#8a6419"/></radialGradient>
+        <pattern id="dt" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="6" cy="6" r=".9" fill="#c9a24a" fill-opacity=".6"/></pattern>
+        <filter id="gr" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="7"/><feColorMatrix type="saturate" values="0"/></filter>
+        <filter id="bl"><feGaussianBlur stdDeviation="4"/></filter>
+        <filter id="wx" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4"/></filter>
+        <filter id="lf" x="-5%" y="-15%" width="110%" height="130%"><feDropShadow dx="0" dy="-2" stdDeviation="3" flood-opacity=".4"/></filter>
+      </defs>
+      <ellipse cx="150" cy="281" rx="128" ry="8" fill="#000" opacity=".22" filter="url(#bl)"/>
+      <rect x="10" y="130" width="280" height="150" rx="3" style="fill:var(--wine)"/><rect x="10" y="130" width="280" height="150" fill="#000" opacity=".45"/>
+      <path id="fp" d="M10 130L142 55Q150 51 158 55L290 130Z" fill="url(#gl)"/><use href="#fp" fill="url(#dt)" opacity=".8"/><use href="#fp" fill="none" stroke="#c9a24a" stroke-width=".8" stroke-opacity=".7"/>
+    </svg>
+    <div class="cl"><div class="card">
+      <div class="arch"><div><span id="mono"></span></div></div>
+      <div class="orn"><i></i>♥<i></i></div>
+    </div></div>
+    <svg viewBox="0 0 300 290" aria-hidden="true">
+      <path d="M10 130L150 200L10 280Z" fill="url(#gL)"/><path d="M290 130L150 200L290 280Z" fill="url(#gR)"/>
+      <path d="M10 280L150 200L290 280Z" fill="url(#gB)" filter="url(#lf)"/>
+      <path d="M10 130L150 200L290 130V280H10Z" filter="url(#gr)" opacity=".1"/>
+      <path d="M10 280L150 200L290 280" fill="none" stroke="#fff" stroke-opacity=".12"/>
+      <path d="M10 130L150 200L290 130" fill="none" stroke="#c9a24a" stroke-opacity=".85" stroke-linejoin="round"/>
+      <path d="M10 137L150 207L290 137" fill="none" stroke="#c9a24a" stroke-opacity=".35" stroke-dasharray="2 3"/>
+      <g transform="translate(150 201)">
+        <ellipse cx="2" cy="5" rx="22" ry="21" opacity=".4" filter="url(#bl)"/>
+        <circle r="22" fill="url(#gg)" filter="url(#wx)"/>
+        <circle r="15.5" fill="none" stroke="#6e4c0e" stroke-opacity=".45"/>
+        <path d="M0 7C-10 0-9-8-4-8c2 0 4 2 4 3 0-1 2-3 4-3 5 0 6 8-4 15Z" fill="#7a5410"/>
+        <ellipse cx="-8" cy="-10" rx="7" ry="3.5" fill="#fff" opacity=".28" transform="rotate(-35 -8 -10)"/>
+      </g>
+    </svg>
+    <span class="fl a" data-flower></span><span class="fl b" data-flower></span>
   </div>
   <div class="names" id="h-names"></div>
 
@@ -179,11 +245,24 @@ const CONFIG = {
   <section class="venue">
     <div class="label" id="t-ven"></div>
     <p style="font-size:18px" id="vName"></p>
-    <p style="font-size:13px;opacity:.75;margin:6px 0 14px" id="vAddr"></p>
+    <p style="font-size:13px;opacity:.75;margin:6px 0 16px" id="vAddr"></p>
+    <a class="map" id="mapA" target="_blank" rel="noopener" aria-label="Open map">
+      <span id="mapArt"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+        <defs><pattern id="blk" width="60" height="50" patternUnits="userSpaceOnUse"><rect x="4" y="4" width="52" height="42" rx="2" fill="#e3d6ba"/></pattern>
+        <path id="rs" d="M-10 60H410M-10 220H410M40 -10V245M290 -10V245M350 -10V245M200 -10V300"/><path id="rm" d="M-10 150H410M120 -10V300"/></defs>
+        <rect width="400" height="300" fill="#efe6d2"/><rect width="400" height="300" fill="url(#blk)"/>
+        <g fill="#d3dab3"><rect x="212" y="72" width="66" height="70" rx="4"/><rect x="48" y="160" width="64" height="52" rx="4"/></g>
+        <g fill="#bfcb95"><circle cx="226" cy="88" r="4"/><circle cx="246" cy="84" r="4"/><circle cx="266" cy="92" r="4"/><circle cx="230" cy="112" r="4"/><circle cx="262" cy="118" r="4"/><circle cx="64" cy="176" r="4"/><circle cx="90" cy="190" r="4"/><circle cx="72" cy="200" r="4"/></g>
+        <path d="M-10 262C70 235 140 285 230 258S350 232 410 250V310H-10Z" fill="#c2d4d2"/>
+        <g fill="none"><use href="#rs" stroke="#d2c4a2" stroke-width="9"/><use href="#rm" stroke="#d2c4a2" stroke-width="16"/><use href="#rs" stroke="#fffaf0" stroke-width="6"/><use href="#rm" stroke="#fffaf0" stroke-width="12"/></g>
+      </svg></span>
+      <span class="pw" id="pw"><svg viewBox="0 0 44 41"><path d="M22 40C8 30 2 22 2 13.5 2 7 7 2.5 12.5 2.5c4 0 7.5 2.2 9.5 6 2-3.8 5.5-6 9.5-6C37 2.5 42 7 42 13.5 42 22 36 30 22 40Z" fill="#d2273d" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/><path d="M11 11c2-3 6-3.500 8-1" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2" stroke-linecap="round"/></svg><b id="pinTag"></b></span>
+    </a>
     <a class="btn" id="vLink" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Open map</a>
   </section>
 </main>
 
+<button class="fab" id="scrollBtn" aria-label="Auto scroll" style="display:none"></button>
 <button class="fab" id="musicBtn" aria-label="Music" style="display:none">♪</button>
 
 <script>
@@ -206,7 +285,9 @@ $('timeDay').textContent=D.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-
 $('dd').textContent=D.getDate(); $('mm').textContent=M[D.getMonth()].toUpperCase(); $('yy').textContent=D.getFullYear();
 
 // الورد (صورة أو مرسوم)
-const rose=`<svg viewBox="0 0 100 130" width="100%" height="100%"><g fill="none" stroke="#c9a24a" stroke-width="1.2"><path d="M50 128C48 90 56 60 70 20M62 70c12-8 20-8 28-16M52 90c-10-10-18-12-28-12"/></g><g><circle cx="52" cy="40" r="22" fill="#7a1522"/><circle cx="52" cy="40" r="15" fill="#932031"/><circle cx="52" cy="40" r="8" fill="#6a111c"/><circle cx="34" cy="82" r="18" fill="#8a1a2a"/><circle cx="34" cy="82" r="11" fill="#a42838"/><circle cx="74" cy="76" r="13" fill="#efe1c6"/><circle cx="74" cy="76" r="7" fill="#d9c49c"/><circle cx="80" cy="14" r="5" fill="#fff"/></g></svg>`;
+const sp=(cx,cy,r)=>{let d='';for(let t=0;t<=11.5;t+=.25)d+=(t?'L':'M')+(cx+r*(.08+.9*t/11.5)*Math.cos(t)).toFixed(1)+' '+(cy+r*(.08+.9*t/11.5)*Math.sin(t)*.92).toFixed(1);return d};
+const rh=(cx,cy,r,a,b,c)=>`<g><circle cx="${cx}" cy="${cy}" r="${r}" fill="${a}"/><circle cx="${cx-r*.1}" cy="${cy-r*.12}" r="${r*.8}" fill="${b}"/><path d="${sp(cx,cy,r*.86)}" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width=".9"/><path d="${sp(cx+1,cy+1,r*.86)}" fill="none" stroke="#000" stroke-opacity=".25" stroke-width=".7"/><circle cx="${cx}" cy="${cy}" r="${r*.2}" fill="${c}"/></g>`;
+const rose=`<svg viewBox="0 0 100 130" width="100%" height="100%"><path d="M50 128C48 90 56 60 70 20M62 70c12-8 20-8 28-16M52 90c-10-10-18-12-28-12" fill="none" stroke="#c9a24a" stroke-width="1.2" stroke-linecap="round"/><g fill="#b8963f" opacity=".85"><path d="M58 62c10-10 22-8 28-6-6 10-18 12-28 6z"/><path d="M50 100c-10-8-20-8-28-4 6 10 18 12 28 4z"/><path d="M52 112c9-6 20-4 26 0-7 8-18 8-26 0z"/></g>${rh(52,40,22,'#5e0f1b','#8d1b2c','#5a0d18')}${rh(34,82,18,'#6b1220','#a42838','#6a111c')}${rh(74,76,13,'#d9c49c','#efe1c6','#cdb788')}<circle cx="80" cy="14" r="5" fill="#fff"/></svg>`;
 document.querySelectorAll('[data-flower]').forEach(e=>e.innerHTML=C.flowerImage?`<img src="${C.flowerImage}" style="width:100%;height:100%;object-fit:contain">`:rose);
 
 // صور افتراضية (لو سبت الخانة فاضية)
@@ -216,18 +297,27 @@ const ph=i=>'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.
 const photos=C.photos.map((p,i)=>p||ph(i)); let cur=0;
 $('gal').innerHTML=photos.map(p=>`<figure><img src="${p}" alt="" draggable="false"></figure>`).join('');
 $('dots').innerHTML=photos.map(()=>'<i></i>').join('');
-const figs=[...$('gal').children], dots=[...$('dots').children];
-function show(){figs.forEach((f,i)=>{const d=i-cur,a=Math.abs(d);
+const figs=[...$('gal').children], dots=[...$('dots').children], N=photos.length, prevD=figs.map(()=>null);
+document.querySelectorAll('.arch img,.gal img').forEach(im=>{const ok=()=>im.classList.add('ld');im.complete?ok():(im.addEventListener('load',ok),im.addEventListener('error',ok))});
+const place=(f,d,hide)=>{const a=Math.abs(d);
   f.style.transform=`translateX(${d*58}%) translateZ(${-a*120}px) rotateY(${-d*32}deg)`;
-  f.style.zIndex=10-a;f.style.opacity=a>2?0:1-a*.15;f.style.filter=a?'grayscale(.5) brightness(.9)':'none'});
+  f.style.zIndex=10-a;f.style.opacity=hide||a>2?0:1-a*.15;f.style.filter=a?'grayscale(.5) brightness(.9)':'none'};
+function show(){const h=Math.floor(N/2);
+  figs.forEach((f,i)=>{const d=((i-cur+N+h)%N)-h;
+    if(prevD[i]!==null&&Math.abs(d-prevD[i])>1){      // الصورة بتلف من ورا: تظهر بنعومة من الجنب التاني
+      f.style.transition='none';place(f,d,true);void f.offsetWidth;f.style.transition='';
+    }
+    place(f,d);prevD[i]=d});
   dots.forEach((d,i)=>d.classList.toggle('on',i===cur))}
 show();
+let gt;
+function goto(n){cur=((n%N)+N)%N;show();clearInterval(gt);gt=setInterval(()=>goto(cur+1),4500)}
+gt=setInterval(()=>goto(cur+1),4500);
 let x0=null;
 $('gal').addEventListener('pointerdown',e=>x0=e.clientX);
 addEventListener('pointerup',e=>{if(x0===null)return;const d=e.clientX-x0;x0=null;
-  if(Math.abs(d)>30){cur=Math.max(0,Math.min(photos.length-1,cur+(d<0?1:-1)));show()}});
-figs.forEach((f,i)=>f.onclick=()=>{cur=i;show()});
-setInterval(()=>{cur=(cur+1)%photos.length;show()},4500);
+  if(Math.abs(d)>30)goto(cur+(d<0?1:-1))});
+figs.forEach((f,i)=>f.onclick=()=>goto(i));
 
 // العدّاد
 function tick(){let s=Math.max(0,Math.floor((D-Date.now())/1000));
@@ -241,7 +331,7 @@ tick();setInterval(tick,1000);
   let h='<tr>'+['Mo','Tu','We','Th','Fr','Sa','Su'].map(d=>`<th>${d}</th>`).join('')+'</tr><tr>';
   for(let i=0;i<first;i++)h+='<td></td>';
   for(let d=1;d<=n;d++){if((first+d-1)%7===0&&d>1)h+='</tr><tr>';
-    h+=`<td${d===D.getDate()?' class="me"':''}>${d}</td>`}
+    h+=d===D.getDate()?`<td class="me"><span>${d}</span></td>`:`<td>${d}</td>`}
   $('cal').innerHTML=h+'</tr>'})();
 
 // Add to Calendar (ملف ics)
@@ -254,7 +344,7 @@ function heart(){const h=document.createElement('div');h.className='fall';h.text
   h.style.left=Math.random()*100+'vw';h.style.animationDuration=4+Math.random()*4+'s';
   document.body.appendChild(h);setTimeout(()=>h.remove(),8000)}
 const hi=setInterval(heart,500);
-$('openBtn').onclick=()=>{$('intro').classList.add('gone');document.body.classList.remove('locked');clearInterval(hi);
+$('openBtn').onclick=()=>{$('intro').classList.add('gone');document.body.classList.remove('locked');clearInterval(hi);document.body.classList.add('opened');opened=true;if(AS.enabled){sb.style.display='grid';sb.innerHTML=ICON.go;tm=setTimeout(start,AS.delay)}
   if(C.music){au.play().catch(()=>{});$('musicBtn').textContent='♪'}};
 
 // الموسيقى
@@ -269,6 +359,33 @@ if(C.music){
   const go=()=>au.play().then(()=>evs.forEach(e=>removeEventListener(e,go))).catch(()=>{});
   au.play().catch(()=>evs.forEach(e=>addEventListener(e,go,{passive:true})));
 }
+
+// الخريطة
+if(C.mapImage)$('mapArt').innerHTML=`<img src="${C.mapImage}" alt="">`;
+const mp=C.mapPin||{x:55,y:45};$('pw').style.left=mp.x+'%';$('pw').style.top=mp.y+'%';
+$('pinTag').textContent=C.venueName;$('mapA').href=C.mapLink;
+
+// سكرول أوتوماتيك (بيقف أول ما تلمس الشاشة، والزرار اللي تحت بيشغله تاني)
+const AS=Object.assign({enabled:true,speed:34,delay:3200},C.autoScroll),sb=$('scrollBtn');
+
+const ICON={go:'<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8l6 6 6-6M6 14l6 6 6-6"/></svg>',stop:'<svg viewBox="0 0 24 24" fill="#fff"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>'};
+let on=false,raf=0,t0=0,pos=0,tm=0,vel=0,opened=false,manualStop=false;
+const maxY=()=>Math.max(document.documentElement.scrollHeight,document.body.scrollHeight)-innerHeight;
+const setY=y=>{scrollTo(0,y);document.documentElement.scrollTop=y;document.body.scrollTop=y};
+function loop(t){if(!on)return;const dt=Math.min(64,t-t0)/1000;t0=t;
+  vel=Math.min(AS.speed,vel+AS.speed*dt/1.2);          // بداية هادية (تسارع تدريجي)
+  pos+=vel*dt;const mx=maxY();
+  if(pos>=mx){setY(mx);return stop()}
+  setY(pos);raf=requestAnimationFrame(loop)}
+function start(){if(on||!AS.enabled||!opened||scrollY>=maxY()-2)return;
+  on=true;pos=scrollY;vel=0;t0=performance.now();sb.innerHTML=ICON.stop;raf=requestAnimationFrame(loop)}
+function stop(){on=false;cancelAnimationFrame(raf);sb.innerHTML=ICON.go}
+sb.onclick=()=>{clearTimeout(tm);if(on){manualStop=true;stop()}else{manualStop=false;start()}};
+// أي لمسة/سكرول بإيدك بيوقفه، وبيكمل لوحده بعد ما تسيب الشاشة
+['wheel','touchstart','touchmove','keydown','pointerdown'].forEach(e=>addEventListener(e,ev=>{
+  if(ev.target.closest&&ev.target.closest('#scrollBtn'))return;
+  clearTimeout(tm);if(on)stop();
+  if(!manualStop)tm=setTimeout(start,AS.resume||3500)},{passive:true}));
 </script>
 </body>
 </html>
